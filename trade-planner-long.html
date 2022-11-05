@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <link rel = "stylesheet" href = "default.css" type = "text/css" />
+    <link rel="icon" href="http://stocktoolz.infinityfreeapp.com/thumbnail.jpg" type="image/x-icon" />
+    </head>
+
+    <body>
+
+        <!-- Background gradient -->
+        <div class = "gradient">
+
+        <h1>StockToolz - Long Trade Planner</h1>
+
+        <ul>
+            <li><a href = "index.php">Home</a></li>
+            <li><a href = "contact.php">Contact</a></li>
+            <li><a href = "about.html">About</a></li>
+        </ul>
+        <br>
+
+        <div class = "mainArea">
+            <p>
+                Need a quick way to plan out your trades? This is the tool for you!
+                Just put in your entry price, the maximum loss you're willing to
+                take, and your profit goal. If you've already entered the trade,
+                you can input your position size as well to get actual dollar
+                amounts.
+            </p>
+            <h3>Thanks for using StockToolz!</h3>
+
+            <!-- Fields for the trade details -->
+            <table>
+            <tr><td><label>Entry Price: </label></td><td>$</td>
+            <td><input type = "text" id = "entry" required></td></tr>
+            <tr><td><label>Maximum Loss: </label></td><td></td>
+            <td><input type = "text" id = "loss" required></td><td>%</td></tr>
+            <tr><td><label>Profit Goal: </label></td><td></td>
+            <td><input type = "text" id = "goal" required></td><td>%</td></tr>
+            <tr><td><label>Position Size: </label></td><td></td>
+            <td><input type = "text" id = "position" placeholder = "optional"></td></tr>
+            </table>
+
+            <br>
+            <button onclick = "calcTrade();">Calculate Trade</button>
+
+            <!-- Where the resulting calculations will be displayed -->
+            <div id = "results"></div>
+            <div id = "positionResults"></div>
+
+            <!-- ---------- JAVASCRIPT FOR RESULTS CALCULATIONS ---------- -->
+
+            <script>
+
+                function calcTrade() {
+
+                    // ----- For Testing ----- \\
+                    //alert("This works");
+                    //alert(isNaN(document.getElementById("entry").value));
+                    //alert(document.getElementById("entry").value == '');
+
+                    // Error message if some of the fields are empty.
+                    if (document.getElementById("entry").value == '' || document.getElementById("loss").value == ''
+                        || document.getElementById("goal").value == '')
+                        document.getElementById("results").innerHTML = 
+                        "<br><font color = 'red'>Please make sure atleast the first three fields"
+                        + " are filled out.</font>";
+
+                    // Error message if something other than numbers is inputed.
+                    else if (isNaN(document.getElementById("entry").value) || isNaN(document.getElementById("loss").value)
+                        || isNaN(document.getElementById("goal").value))
+                        document.getElementById("results").innerHTML = 
+                        "<br><font color = 'red'>Please enter numbers only. (Decimals are fine)</font>";
+
+                    // If all inputs are valid
+                    else {
+
+                        // Getting values from the user
+                        var lossPercent = parseFloat(document.getElementById('loss').value)/100;
+                        var goalPercent = parseFloat(document.getElementById('goal').value)/100;
+                        var entry = parseFloat(document.getElementById('entry').value);
+                        
+                        // Calculate the loss price and the profit price
+                        var loss = (entry - (entry * lossPercent)).toFixed(4);
+                        var goal = (entry + (entry * goalPercent)).toFixed(4);
+                        
+                        // Building the message for the user
+                        var msg =  "<br><br>Entry Price: $" + entry.toFixed(4) + "<br>"
+                        + "Risk to Reward Ratio: " + (goalPercent / lossPercent).toFixed(2) + "<br><br>"
+                        + "Place your stop loss at <i>$" + loss + "</i> and sell at <i>$" + goal
+                        + "</i><br><br>"
+
+                        // Display message
+                        document.getElementById("results").innerHTML = msg;
+                        
+                        // If they specified a position size...
+                        if (document.getElementById("position").value != '') {
+
+                            // Make sure it's a number
+                            if (!isNaN(document.getElementById("position").value)) {
+                                
+                                // ... do all the math...
+                                var position = parseFloat(document.getElementById('position').value);
+                                var costBasis = position * entry;
+                                var lossAmount = costBasis * lossPercent;
+                                var profitAmount = costBasis * goalPercent;
+                                
+                                // ... and show the results.
+                                var msg2 = "Position Size: " + position + " shares<br>"
+                                + "Cost Basis: $" + costBasis.toFixed(2) + "<br><br>"
+                                + "If you sell all shares at a " + document.getElementById('loss').value
+                                + "% loss, you will lose $" + lossAmount.toFixed(2) + "<br>"
+                                + "If you sell all your shares at a " + document.getElementById('goal').value
+                                + "% profit, you will make $" + profitAmount.toFixed(2);
+
+                                 document.getElementById("positionResults").innerHTML = msg2;
+                            }
+                            else
+                                document.getElementById("positionResults").innerHTML = 
+                                "<br><font color = 'red'>Please enter numbers only for your position size.</font>";
+                        }
+                        else // No position size
+                            document.getElementById("positionResults").innerHTML = '';
+                    }
+
+                } // End function 'calcTrade'
+
+            </script>
+
+        </div>
+
+        </div> <!-- Background gradient -->
+
+    </body>
+
+</html>
