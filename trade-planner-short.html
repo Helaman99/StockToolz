@@ -82,13 +82,13 @@
                         var entry = parseFloat(document.getElementById('entry').value);
                         
                         // Calculate the loss price and the profit price
-                        var loss = (entry - (entry * lossPercent)).toFixed(4);
-                        var goal = (entry + (entry * goalPercent)).toFixed(4);
+                        var loss = (entry + (entry * lossPercent)).toFixed(4);
+                        var goal = (entry - (entry * goalPercent)).toFixed(4);
                         
                         // Building the message for the user
                         var msg =  "<br><br>Entry Price: $" + entry.toFixed(4) + "<br>"
                         + "Risk to Reward Ratio: " + (goalPercent / lossPercent).toFixed(2) + "<br><br>"
-                        + "Place your stop loss at <i>$" + loss + "</i> and sell at <i>$" + goal
+                        + "Cut losses at <i>$" + loss + "</i> and re-buy your shares at <i>$" + goal
                         + "</i><br><br>"
 
                         // Display message

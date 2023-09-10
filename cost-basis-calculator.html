@@ -68,14 +68,20 @@
 
                 <br>
                 <button name = "submit">Calculate</button>
+                <button id = "reset">Reset</button>
                 <br><br><br>
-            
             </form>
+            
 
             <div class = "results"></div>
 
             <!-- Calculates the cost basis per share once the 'Calculate' button is pressed -->
             <script>
+                document.querySelector('#reset').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    location.reload();
+                });
+
                 document.querySelector('form').addEventListener('submit', function(event) {
                     event.preventDefault();
                     let x = 1;
