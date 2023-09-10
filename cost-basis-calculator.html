@@ -15,8 +15,7 @@
         <h1>StockToolz - Cost Basis Per Share Calculator</h1>
         
         <ul>
-            <li><a href = "index.php">Home</a></li>
-            <li><a href = "contact.php">Contact</a></li>
+            <li><a href = "index.html">Home</a></li>
             <li><a href = "about.html">About</a></li>
         </ul>
         <br>
@@ -73,50 +72,47 @@
             
             </form>
 
+            <div class = "results"></div>
+
             <!-- Calculates the cost basis per share once the 'Calculate' button is pressed -->
-            <?php
-
-                if (isset($_GET['submit'])) {
-
-                    $x = 1;
-                    $totalShares = 0;
-                    $totalCost = 0;
-                    $cbps = 0;
-                    $flag = 0; // Will signal if a non-numerical is detected
-
-                    // echo $_GET['shares' . $x]; // For testing
+            <script>
+                document.querySelector('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    let x = 1;
+                    let totalShares = 0;
+                    let totalCost = 0;
+                    let cbps = 0;
+                    let flag = 0; // Will signal if a non-numerical is detected
 
                     // Combines all the shares and their cost
-                    while (isset($_GET['shares' . $x]) && isset($_GET['cost' . $x])) {
+                    while (document.querySelector('[name="shares' + x + '"]') && document.querySelector('[name="cost' + x + '"]')) {
                         // If both fields are filled out
-                        if ($_GET['shares' . $x] && $_GET['cost' . $x]) {
-                            if (is_numeric($_GET['shares' . $x]) && is_numeric($_GET['cost' . $x])) {
-                                $totalShares += $_GET['shares' . $x]; // Share count
-                                $totalCost += $_GET['shares' . $x] * $_GET['cost' . $x]; // Shares multiplied by their cost
-                                $x++;
+                        if (document.querySelector('[name="shares' + x + '"]').value && document.querySelector('[name="cost' + x + '"]').value) {
+                            if (!isNaN(document.querySelector('[name="shares' + x + '"]').value) && !isNaN(document.querySelector('[name="cost' + x + '"]').value)) {
+                                totalShares += parseInt(document.querySelector('[name="shares' + x + '"]').value); // Share count
+                                totalCost += parseInt(document.querySelector('[name="shares' + x + '"]').value) * parseInt(document.querySelector('[name="cost' + x + '"]').value); // Shares multiplied by their cost
+                                x++;
                             }
                             else {
-                                $flag = 1;
+                                flag = 1;
                                 break;
                             }
                         }
-                        else // Skip this row if one of the fields are emty - Helps prevent errors
-                            $x++;
+                        else // Skip this row if one of the fields are empty - Helps prevent errors
+                            x++;
                     }
 
-                    if ($flag == 1) // Error case if a non-numerical is detected.
-                        echo "<font color = 'red'>Please enter numbers only. (Decimals are fine)</font>";
-                    else if ($totalCost == 0 || $totalShares == 0) // Error case if nothing is filled out all the way.
-                        echo "<font color = 'red'>Huh, some rows aren't filled out all the way!</font>";
+                    if (flag == 1) // Error case if a non-numerical is detected.
+                        document.querySelector(".results").innerHTML = "<font color = 'red'>Please enter numbers only. (Decimals are fine)</font>";
+                    else if (totalCost == 0 || totalShares == 0) // Error case if nothing is filled out all the way.
+                        document.querySelector(".results").innerHTML = "<font color = 'red'>Huh, some rows aren't filled out all the way!</font>";
                     else {
                         // Divide the total cost of all shares by the number of shares and display.
-                        $cbps = $totalCost/$totalShares;
-                        echo "Cost Basis Per Share: $" . number_format($cbps, 4);
+                        cbps = totalCost/totalShares;
+                        document.querySelector(".results").innerHTML = "Cost Basis Per Share: $" + cbps.toFixed(4);
                     }
-
-                }
-
-            ?>
+                })
+            </script>
 
         </div>
 

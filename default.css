@@ -55,10 +55,19 @@ button {
     font-size : 85%;
     
 }
+button a {
+    text-decoration: none;
+    color: black;
+    font-family : Century Gothic, sans-serif;
+    font-weight: normal;
+}
 button:hover {
     font-size : 90%;
     color : rgb(13, 213, 83);
     border-color : rgb(13, 213, 83);
+}
+button:hover a {
+    color : rgb(13, 213, 83);
 }
 a {
     font-family : Century Gothic, sans-serif;
