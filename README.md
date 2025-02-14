@@ -1,6 +1,6 @@
 # StockToolz
 A website to help me trade stocks.
-Hosted on Azure at [stocktoolz.infinityfreeapp.com](https://agreeable-ground-0b392c21e.3.azurestaticapps.net/)
+Hosted on Azure at https://agreeable-ground-0b392c21e.3.azurestaticapps.net/
 
 ### To Run
 
